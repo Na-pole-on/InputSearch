@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLayer.Repository
 {
-    internal class PartyRepository: Repository<Party>
+    internal class PartyRepository: IRepository<Party>
     {
         private AppDatabase db;
 

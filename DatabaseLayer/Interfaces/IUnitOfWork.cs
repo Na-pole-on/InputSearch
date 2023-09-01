@@ -9,7 +9,7 @@ namespace DatabaseLayer.Interfaces
 {
     public interface IUnitOfWork: IDisposable
     {
-        Repository<Party> PartyRepository { get; }
+        IRepository<Party> PartyRepository { get; }
         Task Save();
     }
 }

@@ -19,7 +19,7 @@ namespace DatabaseLayer.Repository
 
         public AppUnitOfWork(AppDatabase db) => this.db = db; 
 
-        public Repository<Party> PartyRepository
+        public IRepository<Party> PartyRepository
         {
             get
             {

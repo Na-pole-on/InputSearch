@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Dtos
 {
-    internal class PartyDTO
+    public class PartyDTO
     {
         public string? Id { get; set; }
         public string? Name { get; set; }

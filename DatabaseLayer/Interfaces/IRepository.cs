@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatabaseLayer.Interfaces
 {
-    public interface Repository<T> 
+    public interface IRepository<T> 
         where T : class
     {
         IEnumerable<T>? GetAll();
