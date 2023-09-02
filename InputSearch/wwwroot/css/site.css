@@ -1,18 +1,22 @@
-html {
-  font-size: 14px;
+.homelogo {
+    height: 3rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.avatar {
+    height: 2.25rem;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.party-text {
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
-body {
-  margin-bottom: 60px;
+.scroll {
+    width: auto;
+    max-height: 15rem;
+    overflow-y: auto;
 }

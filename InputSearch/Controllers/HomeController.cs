@@ -1,4 +1,4 @@
-﻿using InputSearch.Models;
+﻿using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,27 +6,13 @@ namespace InputSearch.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        IPartyServices _partyServices;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        public HomeController(IPartyServices partyServices) => _partyServices = partyServices;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Parties() => View();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        [HttpGet("/api/parties")]
+        public JsonResult GetParties() => Json(_partyServices.GetAll().Take(12));
     }
 }
