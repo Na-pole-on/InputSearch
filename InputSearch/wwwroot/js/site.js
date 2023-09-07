@@ -1,5 +1,4 @@
-﻿
-function row(party) {
+﻿function row(party) {
     const col = document.createElement("div");
     col.className = "col album-col";
 
@@ -88,7 +87,7 @@ function btnShowMore(switcher) {
         btn.addEventListener("click", async () => await showMore());
     }
     else {
-
+        btn.addEventListener("click", async () => await searchShowMore());
     }
 
     position.append(btn);

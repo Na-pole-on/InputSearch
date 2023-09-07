@@ -8,6 +8,8 @@
         const parties = await response.json();
         const rows = document.querySelector(".party-list");
 
+        deleteAll();
+
         parties.forEach(party => rows.append(row(party)));
         btnShowMore(true);
     }
@@ -48,14 +50,34 @@ async function search() {
         const rows = document.querySelector(".party-list");
         deleteAll();
 
-        parties.forEach(party => rows.append(row(party)));
-
-        if (getCount(parties) == 6) {
-            btnShowMore();
+        if (getCount(parties) < 6) {
+            deleteShowMore();
         }
+        else {
+            btnShowMore(false);
+        }
+
+        parties.forEach(party => rows.append(row(party)));
     }
     else {
         notFound();
+    }
+}
+
+async function searchShowMore() {
+    const search = document.getElementById("search").value;
+
+    const response = await fetch("/api/search", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(search)
+    });
+
+    if (response.ok === true) {
+        const parties = await response.json();
+        const rows = document.querySelector(".party-list");
+
+        parties.forEach(party => rows.append(row(party)));
     }
 }
 

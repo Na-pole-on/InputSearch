@@ -8,14 +8,24 @@ namespace InputSearch.Controllers
     public class HomeController : Controller
     {
         private IPartyServices _partyServices;
-        private static int count = 6;
+        private static int getPartiesStep = 6;
+
+        private static int searchStep = 6;
+        private static string lastName = "";
 
         public HomeController(IPartyServices partyServices) => _partyServices = partyServices;
 
-        public IActionResult Parties() => View();
+        public IActionResult Parties()
+        {
+            getPartiesStep = 6;
+            searchStep = 6;
+            lastName = "";
+
+            return View();
+        }
 
         [HttpGet("/api/parties")]
-        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(count));
+        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(getPartiesStep));
 
         [HttpGet("/api/show")]
         public IActionResult ShowMore()
@@ -26,10 +36,10 @@ namespace InputSearch.Controllers
             if (list is not null)
             {
                 var parties = list
-                    .Skip(count)
+                    .Skip(getPartiesStep)
                     .Take(6);
 
-                count += 6;
+                getPartiesStep += 6;
 
                 return Json(parties);
             }
@@ -60,12 +70,24 @@ namespace InputSearch.Controllers
 
             if(search is not null)
             {
-                IEnumerable<PartyDTO>? dtos = _partyServices
+                IEnumerable<PartyDTO>? list = _partyServices
                     .GetPartiesByName(search);
 
-                if(dtos is not null)
-                    if(dtos.Count() > 0)
-                        return Json(dtos.Take(6));
+                if(list is not null)
+                    if(list.Count() > 0)
+                    {
+                        if(search == lastName)
+                        {
+                            getPartiesStep += 6;;
+
+                            return Json(list.Skip(searchStep).Take(6));
+                        }
+
+                        getPartiesStep = 6;
+                        lastName = search;
+
+                        return Json(list.Take(searchStep));
+                    }
             }
 
             return NotFound();
