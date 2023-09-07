@@ -143,3 +143,7 @@ function getCount(parties) {
 
     return count;
 }
+
+function editAlphabetically(switcher) {
+
+}

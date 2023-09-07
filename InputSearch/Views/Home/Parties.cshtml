@@ -7,9 +7,20 @@
     </div>
 </section>
 
-<div class="d-flex justify-content-end">
-    <input id="search" class="form-control me-2" type="search" placeholder="Search" />
-    <button class="btn btn-outline-success" type="submit" onclick="search()">Search</button>
+<div class="d-flex justify-content-end align-items-center">
+    <input id="search" class="form-control" type="search" placeholder="Search" />
+    <button class="btn btn-outline-success mx-3" type="submit" onclick="search()">Search</button>
+    <div class="dropdown text-end">
+        <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-gears" style="font-size: 1.5rem; color: #595c5f;"></i>
+        </a>
+
+        <ul class="dropdown-menu text-small" style="">
+            <li><button class="btn dropdown-item" onclick="alphabetically()">Alphabetically ↑</button></li>
+            <li><button class="btn dropdown-item" onclick="students()">Students ↑</button></li>
+            <li><button class="btn dropdown-item" onclick="dateOfCreation()">Date of creation ↑</button></li>
+        </ul>
+    </div>
 </div>
 
 <div class="album py-5">

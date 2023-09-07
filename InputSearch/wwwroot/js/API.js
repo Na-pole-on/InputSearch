@@ -102,4 +102,12 @@ async function addStudent(id) {
 
 }
 
+async function alphabeticallyUpper() {
+
+}
+
+async function alphabeticallyLower() {
+
+}
+
 getUsers();
