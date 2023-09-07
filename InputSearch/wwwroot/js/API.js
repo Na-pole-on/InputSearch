@@ -28,7 +28,7 @@ async function showMore() {
         const parties = await response.json();
         const rows = document.querySelector(".party-list");
 
-        if (getCount(parties) < 6) {
+        if (getCount(parties) < 9) {
             deleteShowMore();
         }
 
@@ -50,7 +50,7 @@ async function search() {
         const rows = document.querySelector(".party-list");
         deleteAll();
 
-        if (getCount(parties) < 6) {
+        if (getCount(parties) < 9) {
             deleteShowMore();
         }
         else {
@@ -76,6 +76,10 @@ async function searchShowMore() {
     if (response.ok === true) {
         const parties = await response.json();
         const rows = document.querySelector(".party-list");
+
+        if (getCount(parties) < 9) {
+            deleteShowMore();
+        }
 
         parties.forEach(party => rows.append(row(party)));
     }

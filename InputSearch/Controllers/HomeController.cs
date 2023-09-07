@@ -8,6 +8,8 @@ namespace InputSearch.Controllers
     public class HomeController : Controller
     {
         private IPartyServices _partyServices;
+
+        private const int step = 9;
         private static int getPartiesStep = 6;
 
         private static int searchStep = 6;
@@ -17,15 +19,15 @@ namespace InputSearch.Controllers
 
         public IActionResult Parties()
         {
-            getPartiesStep = 6;
-            searchStep = 6;
+            getPartiesStep = step;
+            searchStep = step;
             lastName = "";
 
             return View();
         }
 
         [HttpGet("/api/parties")]
-        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(getPartiesStep));
+        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(step));
 
         [HttpGet("/api/show")]
         public IActionResult ShowMore()
@@ -37,9 +39,9 @@ namespace InputSearch.Controllers
             {
                 var parties = list
                     .Skip(getPartiesStep)
-                    .Take(6);
+                    .Take(step);
 
-                getPartiesStep += 6;
+                getPartiesStep += step;
 
                 return Json(parties);
             }
@@ -78,12 +80,12 @@ namespace InputSearch.Controllers
                     {
                         if(search == lastName)
                         {
-                            getPartiesStep += 6;;
+                            searchStep += step;
 
-                            return Json(list.Skip(searchStep).Take(6));
+                            return Json(list.Skip(searchStep).Take(step));
                         }
 
-                        getPartiesStep = 6;
+                        searchStep = step;
                         lastName = search;
 
                         return Json(list.Take(searchStep));
