@@ -1,22 +1,7 @@
-﻿async function getUsers() {
-    const response = await fetch("/api/parties", {
-        method: "GET",
-        headers: { "Accept": "application/json" }
-    });
-
-    if (response.ok === true) {
-        const parties = await response.json();
-        const rows = document.querySelector(".party-list");
-
-        parties.forEach(party => rows.append(row(party)));
-    }
-}
-
-
-
+﻿
 function row(party) {
     const col = document.createElement("div");
-    col.className = "col";
+    col.className = "col album-col";
 
     const card = document.createElement("div");
     card.className = "card shadow-sm";
@@ -35,7 +20,7 @@ function row(party) {
     const text = document.createElement("text");
     text.style.position = "relative";
     text.style.top = "50%";
-    text.style.left = "50%";
+    text.style.left = "25%";
     text.style.color = "#eceeef";
     text.append(party.name);
     svg.append(text);
@@ -61,14 +46,21 @@ function row(party) {
     const btn_group = document.createElement("div");
     btn_group.className = "btn-group";
 
-    const a = document.createElement("a");
-    a.className = "btn btn-sm btn-outline-secondary";
-    a.innerText = "Add";
-    btn_group.append(a);
+    const btn_add = document.createElement("button");
+    btn_add.className = "btn btn-sm btn-outline-secondary";
+    btn_add.innerText = "Add";
+    btn_add.addEventListener("click", async () => await addStudent(party.id));
+    btn_group.append(btn_add);
+
+    const btn_show = document.createElement("button");
+    btn_show.className = "btn btn-sm btn-outline-secondary";
+    btn_show.innerText = "Show";
+    btn_group.append(btn_show);
 
     const small = document.createElement("small");
     small.className = "text-body-secondary";
     small.append(party.students + " - students");
+    small.setAttribute("id", party.id);
     d_flex.append(btn_group);
     d_flex.append(small);
 
@@ -81,6 +73,74 @@ function row(party) {
     return col;
 }
 
+function btnShowMore(switcher) {
+    const show = document.getElementById("show-more");
 
+    const position = document.createElement("div");
+    position.className = "position-absolute top-50 start-50 translate-middle pb-3";
 
-getUsers();
+    const btn = document.createElement("button");
+    btn.className = "border border-black p-3";
+    btn.style.background = "none";
+    btn.append("Show more");
+
+    if (switcher) {
+        btn.addEventListener("click", async () => await showMore());
+    }
+    else {
+
+    }
+
+    position.append(btn);
+    show.append(position);
+}
+
+function deleteAll() {
+    const parties = document.querySelector(".party-list");
+    const show = document.getElementById("show-more");
+    const error = document.getElementById("error");
+
+    parties.innerHTML = "";
+    show.innerHTML = "";
+    error.innerHTML = "";
+}
+
+function deletePartyList() {
+    const parties = document.querySelector(".party-list");
+    parties.innerHTML = "";
+}
+
+function deleteShowMore() {
+    const show = document.getElementById("show-more");
+    show.innerHTML = "";
+}
+
+function deleteError() {
+    const show = document.getElementById("show-more");
+    error.innerHTML = "";
+}
+
+function notFound() {
+    deleteAll();
+
+    const parties = document.querySelector("#error");
+
+    const position = document.createElement("div");
+    position.className = "mb-3";
+    position.style = "display: flex; justify-content: center;";
+
+    const a = document.createElement("a");
+    a.append("There are no similar parties!");
+
+    position.append(a);
+    parties.append(position);
+}
+
+function getCount(parties) {
+    var count = 0;
+    for (var key in parties) {
+        count++;
+    }
+
+    return count;
+}

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -27,8 +28,31 @@ namespace BusinessLayer.Services
                     Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
-                    PartyIdentifier = p.PartyIdentifier
+                    PartyIdentifier = p.PartyIdentifier,
+                    Students = p.Students
                 });
+
+            return null;
+        }
+
+        public PartyDTO? GetById(string id)
+        {
+            IEnumerable<Party>? parties = _unitOfWork.PartyRepository
+                .GetAll();
+
+            if (parties is not null)
+            {
+                Party? party = parties.FirstOrDefault(p => p.Id == id);
+
+                if (party is not null)
+                    return new PartyDTO
+                    {
+                        Id = party.Id,
+                        Name = party.Name,
+                        Description = party.Description,
+                        PartyIdentifier = party.PartyIdentifier
+                    };
+            }
 
             return null;
         }
@@ -77,6 +101,25 @@ namespace BusinessLayer.Services
             return null;
         }
 
+        public IEnumerable<PartyDTO>? GetPartiesByName(string name)
+        {
+            Regex regex = new Regex($@"\w*{name}\w*", RegexOptions.IgnoreCase);
+
+            List<PartyDTO>? dtos = GetAll()?
+                .ToList();
+
+            if(dtos is not null)
+            {
+                foreach(var d in dtos.ToList())
+                {
+                    if(!regex.IsMatch(d.Name))
+                        dtos.Remove(d);
+                }
+            }
+
+            return dtos;
+        } 
+
         public async Task<bool> CreateAsync(PartyDTO dto)
         {
             PartyDTO? search = GetByName(dto.Name);
@@ -114,6 +157,15 @@ namespace BusinessLayer.Services
             Random random = new Random();
 
             return $"({random.Next(0, 9)})-{random.Next(10, 99)}-{random.Next(10, 99)}";
+        }
+
+        public async Task<bool> AddStudent(string id)
+        {
+            bool response = await _unitOfWork.PartyRepository
+                .AddStudent(id);
+            await _unitOfWork.Save();
+
+            return response;
         }
     }
 }

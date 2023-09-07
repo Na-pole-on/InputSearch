@@ -37,13 +37,15 @@
         </div>
     </header>
     
-    <main role="main" class="pb-3">
+    <main role="main" class="container pb-3">
         @RenderBody()
     </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/API.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/8c57d5d3d6.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

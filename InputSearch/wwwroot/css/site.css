@@ -20,3 +20,7 @@
     max-height: 15rem;
     overflow-y: auto;
 }
+
+#search{
+    max-width: 35rem;
+}

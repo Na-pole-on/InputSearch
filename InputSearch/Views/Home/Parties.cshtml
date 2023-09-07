@@ -1,4 +1,4 @@
-﻿<section class=" text-center container">
+﻿<section class="text-center">
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">List of parties</h1>
@@ -7,18 +7,23 @@
     </div>
 </section>
 
+<div class="d-flex justify-content-end">
+    <input id="search" class="form-control me-2" type="search" placeholder="Search" />
+    <button class="btn btn-outline-success" type="submit" onclick="search()">Search</button>
+</div>
+
 <div class="album py-5">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 party-list">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 party-list">
 
-        </div>
     </div>
 </div>
 
-<div class="position-relative mb-5">
-    <div class="position-absolute top-50 start-50 translate-middle">
-        <button class="border border-black p-3" style="background: none;">
-            Show more
-        </button>
-    </div>
+<div id="error"></div>
+
+<div id="show-more" class="position-relative">
+    
 </div>
+
+<script>
+    
+</script>
