@@ -147,6 +147,7 @@ function getCount(parties) {
 function changeFilter(id) { 
     const btn = document.getElementById(id);
     var value = Number(btn.getAttribute("value"));
+    clearFilter(id);
 
     switch (value) {
         case -1: {
@@ -161,5 +162,25 @@ function changeFilter(id) {
             btn.innerText = btn.innerText.slice(0, btn.innerText.indexOf(" ↑")) + " ↓";
             btn.setAttribute("value", "-1");
         } break;
+    }
+}
+
+function clearFilter(id) {
+    if (id != "alphabetically") {
+        const alpha = document.getElementById("alphabetically");
+        alpha.innerText = "Alphabetically";
+        alpha.setAttribute("value", "0");
+    }
+
+    if (id != "students") {
+        const stud = document.getElementById("students");
+        stud.innerText = "Students";
+        stud.setAttribute("value", "0");
+    }
+
+    if (id != "date") {
+        const stud = document.getElementById("date");
+        stud.innerText = "Date of creation";
+        stud.setAttribute("value", "0");
     }
 }

@@ -10,6 +10,6 @@ namespace BusinessLayer.Dtos
     {
         public int Alphabetically { get; set; }
         public int Students { get; set; }
-        public int DateOfCreation { get; set; }
+        public int Date { get; set; }
     }
 }

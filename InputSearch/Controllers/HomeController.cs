@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Dtos;
 using BusinessLayer.Interfaces;
-using InputSearch.Models;
 using InputSearch.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -104,6 +103,8 @@ namespace InputSearch.Controllers
             {
                 IEnumerable<PartyDTO>? dtos = _partyServices
                     .FilterParties(filter);
+
+                return Json(dtos);
             }
 
             return NotFound();

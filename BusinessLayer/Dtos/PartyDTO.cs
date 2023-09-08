@@ -13,5 +13,6 @@ namespace BusinessLayer.Dtos
         public string? Description { get; set; }
         public string? PartyIdentifier { get; set; }
         public int Students { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

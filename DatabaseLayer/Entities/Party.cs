@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,5 +14,7 @@ namespace DatabaseLayer.Entities
         public string? Description { get; set; }
         public string? PartyIdentifier { get; set; }
         public int Students { get; set; } = 0;
+        [DataType(DataType.Date)]
+        public DateTime CreatedDate { get; set; }
     }
 }

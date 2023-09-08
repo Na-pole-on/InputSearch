@@ -29,7 +29,8 @@ namespace BusinessLayer.Services
                     Name = p.Name,
                     Description = p.Description,
                     PartyIdentifier = p.PartyIdentifier,
-                    Students = p.Students
+                    Students = p.Students,
+                    DateCreated = p.CreatedDate
                 });
 
             return null;
@@ -56,7 +57,6 @@ namespace BusinessLayer.Services
 
             return null;
         }
-
         public PartyDTO? GetByName(string name)
         {
             IEnumerable<Party>? parties = _unitOfWork.PartyRepository
@@ -78,7 +78,6 @@ namespace BusinessLayer.Services
 
             return null;
         }
-
         public PartyDTO? GetByPartyId(string partyId)
         {
             IEnumerable<Party>? parties = _unitOfWork.PartyRepository
@@ -100,7 +99,6 @@ namespace BusinessLayer.Services
 
             return null;
         }
-
         public IEnumerable<PartyDTO>? GetPartiesByName(string name)
         {
             Regex regex = new Regex($@"\w*{name}\w*", RegexOptions.IgnoreCase);
@@ -151,7 +149,6 @@ namespace BusinessLayer.Services
 
             return false;
         }
-
         private string GetPartyIdentifier()
         {
             Random random = new Random();
@@ -166,6 +163,59 @@ namespace BusinessLayer.Services
             await _unitOfWork.Save();
 
             return response;
+        }
+
+        public IEnumerable<PartyDTO>? FilterParties(FilterDTO filter)
+        {
+            var dtos = GetAll();
+
+            if(dtos is not null)
+            {
+                if(filter.Alphabetically != 0)
+                    dtos = AlphabeticallyFilter(dtos, filter.Alphabetically);
+
+                if(filter.Students != 0)
+                    dtos = StudentsFilter(dtos, filter.Students);
+
+                if (filter.Date != 0)
+                    dtos = DateFilter(dtos, filter.Date);
+            }
+
+            return dtos;
+        }
+
+        private IEnumerable<PartyDTO>? AlphabeticallyFilter(IEnumerable<PartyDTO> dtos, int number)
+        {
+            switch(number)
+            {
+                case 1: return dtos.OrderBy(p => p.Name);
+                case -1: return dtos.OrderBy(p => p.Name)
+                        .Reverse();
+                default: return dtos;
+            }
+        }
+
+        private IEnumerable<PartyDTO> StudentsFilter(IEnumerable<PartyDTO> dtos, int number)
+        {
+            switch (number)
+            {
+                case 1: return dtos.OrderBy(p => p.Students);
+                case -1: return dtos.OrderBy(p => p.Students)
+                        .Reverse();
+                default: return dtos;
+            }
+        }
+
+        private IEnumerable<PartyDTO> DateFilter(IEnumerable<PartyDTO> dtos, int number)
+        {
+            switch (number)
+            {
+                case 1: return dtos.OrderBy(p => p.DateCreated);
+                case -1:
+                    return dtos.OrderBy(p => p.DateCreated)
+                        .Reverse();
+                default: return dtos;
+            }
         }
     }
 }

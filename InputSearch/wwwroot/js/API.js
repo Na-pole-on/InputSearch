@@ -118,12 +118,16 @@ async function filter(id) {
         body: JSON.stringify({
             alphabetically: parseInt(alpha),
             students: parseInt(stu),
-            dateOfCreations: parseInt(date)
+            date: parseInt(date)
         })
     });
 
     if (response.ok === true) {
-        alert("true");
+        const parties = await response.json();
+        const rows = document.querySelector(".party-list");
+        deleteAll();
+
+        parties.forEach(party => rows.append(row(party)));
     }
 }
 
