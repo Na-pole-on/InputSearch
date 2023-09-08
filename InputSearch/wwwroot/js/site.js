@@ -144,6 +144,22 @@ function getCount(parties) {
     return count;
 }
 
-function editAlphabetically(switcher) {
+function changeFilter(id) { 
+    const btn = document.getElementById(id);
+    var value = Number(btn.getAttribute("value"));
 
+    switch (value) {
+        case -1: {
+            btn.innerText = btn.innerText.slice(0, btn.innerText.indexOf(" ↓"));
+            btn.setAttribute("value", "0");
+        } break;
+        case 0: {
+            btn.innerText = btn.innerText.slice(0, btn.innerText.length) + " ↑";
+            btn.setAttribute("value", "1");
+        } break;
+        case 1: {
+            btn.innerText = btn.innerText.slice(0, btn.innerText.indexOf(" ↑")) + " ↓";
+            btn.setAttribute("value", "-1");
+        } break;
+    }
 }

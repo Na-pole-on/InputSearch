@@ -102,12 +102,29 @@ async function addStudent(id) {
 
 }
 
-async function alphabeticallyUpper() {
+async function filter(id) {
+    changeFilter(id);
 
-}
+    var alpha = document.getElementById("alphabetically")
+        .getAttribute("value");
+    var stu = document.getElementById("students")
+        .getAttribute("value");
+    var date = document.getElementById("date")
+        .getAttribute("value");
 
-async function alphabeticallyLower() {
+    const response = await fetch("/api/filter", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            alphabetically: parseInt(alpha),
+            students: parseInt(stu),
+            dateOfCreations: parseInt(date)
+        })
+    });
 
+    if (response.ok === true) {
+        alert("true");
+    }
 }
 
 getUsers();

@@ -16,9 +16,9 @@
         </a>
 
         <ul class="dropdown-menu text-small" style="">
-            <li><button class="btn dropdown-item" onclick="alphabetically()">Alphabetically ↑</button></li>
-            <li><button class="btn dropdown-item" onclick="students()">Students ↑</button></li>
-            <li><button class="btn dropdown-item" onclick="dateOfCreation()">Date of creation ↑</button></li>
+            <li><button id="alphabetically" class="btn dropdown-item" onclick="filter(this.id)" value="0">Alphabetically</button></li>
+            <li><button id="students" class="btn dropdown-item" onclick="filter(this.id)" value="0">Students</button></li>
+            <li><button id="date" class="btn dropdown-item" onclick="filter(this.id)" value="0">Date of creation</button></li>
         </ul>
     </div>
 </div>

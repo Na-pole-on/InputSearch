@@ -14,6 +14,7 @@ namespace BusinessLayer.Interfaces
         PartyDTO? GetByName(string name);
         PartyDTO? GetByPartyId(string partyId);
         IEnumerable<PartyDTO>? GetPartiesByName(string name);
+        IEnumerable<PartyDTO>? FilterParties(FilterDTO dto);
         Task<bool> CreateAsync(PartyDTO dto);
         Task<bool> AddStudent(string id);
     }

@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Dtos;
 using BusinessLayer.Interfaces;
+using InputSearch.Models;
+using InputSearch.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -9,25 +11,21 @@ namespace InputSearch.Controllers
     {
         private IPartyServices _partyServices;
 
-        private const int step = 9;
-        private static int getPartiesStep = 6;
-
-        private static int searchStep = 6;
-        private static string lastName = "";
+        private ListOfModels models = new ListOfModels();
 
         public HomeController(IPartyServices partyServices) => _partyServices = partyServices;
 
         public IActionResult Parties()
         {
-            getPartiesStep = step;
-            searchStep = step;
-            lastName = "";
+            ListOfModels.getPartiesStep = ListOfModels.step;
+            ListOfModels.searchStep = ListOfModels.step;
+            ListOfModels.lastName = "";
 
             return View();
         }
 
         [HttpGet("/api/parties")]
-        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(step));
+        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(ListOfModels.step));
 
         [HttpGet("/api/show")]
         public IActionResult ShowMore()
@@ -38,10 +36,10 @@ namespace InputSearch.Controllers
             if (list is not null)
             {
                 var parties = list
-                    .Skip(getPartiesStep)
-                    .Take(step);
+                    .Skip(ListOfModels.getPartiesStep)
+                    .Take(ListOfModels.step);
 
-                getPartiesStep += step;
+                ListOfModels.getPartiesStep += ListOfModels.step;
 
                 return Json(parties);
             }
@@ -78,18 +76,34 @@ namespace InputSearch.Controllers
                 if(list is not null)
                     if(list.Count() > 0)
                     {
-                        if(search == lastName)
+                        if(search == ListOfModels.lastName)
                         {
-                            searchStep += step;
+                            ListOfModels.searchStep += ListOfModels.step;
 
-                            return Json(list.Skip(searchStep).Take(step));
+                            return Json(list.Skip(ListOfModels.searchStep)
+                                .Take(ListOfModels.step));
                         }
 
-                        searchStep = step;
-                        lastName = search;
+                        ListOfModels.searchStep = ListOfModels.step;
+                        ListOfModels.lastName = search;
 
-                        return Json(list.Take(searchStep));
+                        return Json(list.Take(ListOfModels.searchStep));
                     }
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost("/api/filter")]
+        public async Task<IActionResult> CheckFilter()
+        {
+            FilterDTO? filter = await Request
+                .ReadFromJsonAsync<FilterDTO>();
+
+            if(filter is not null)
+            {
+                IEnumerable<PartyDTO>? dtos = _partyServices
+                    .FilterParties(filter);
             }
 
             return NotFound();
