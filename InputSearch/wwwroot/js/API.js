@@ -11,7 +11,7 @@
         deleteAll();
 
         parties.forEach(party => rows.append(row(party)));
-        btnShowMore(true);
+        btnShowMore(0);
     }
     else {
         notFound();
@@ -54,7 +54,7 @@ async function search() {
             deleteShowMore();
         }
         else {
-            btnShowMore(false);
+            btnShowMore(1);
         }
 
         parties.forEach(party => rows.append(row(party)));
@@ -126,6 +126,43 @@ async function filter(id) {
         const parties = await response.json();
         const rows = document.querySelector(".party-list");
         deleteAll();
+
+        if (getCount(parties) < 9) {
+            deleteShowMore();
+        }
+        else {
+            btnShowMore(-1);
+        }
+
+        parties.forEach(party => rows.append(row(party)));
+    }
+}
+
+async function filterShowMore() {
+    var alpha = document.getElementById("alphabetically")
+        .getAttribute("value");
+    var stu = document.getElementById("students")
+        .getAttribute("value");
+    var date = document.getElementById("date")
+        .getAttribute("value");
+
+    const response = await fetch("/api/filter", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            alphabetically: parseInt(alpha),
+            students: parseInt(stu),
+            date: parseInt(date)
+        })
+    });
+
+    if (response.ok === true) {
+        const parties = await response.json();
+        const rows = document.querySelector(".party-list");
+
+        if (getCount(parties) < 9) {
+            deleteShowMore();
+        }
 
         parties.forEach(party => rows.append(row(party)));
     }

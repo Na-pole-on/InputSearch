@@ -10,21 +10,21 @@ namespace InputSearch.Controllers
     {
         private IPartyServices _partyServices;
 
-        private ListOfModels models = new ListOfModels();
+        private static  ListOfModels models = new ListOfModels();
 
         public HomeController(IPartyServices partyServices) => _partyServices = partyServices;
 
         public IActionResult Parties()
         {
-            ListOfModels.getPartiesStep = ListOfModels.step;
-            ListOfModels.searchStep = ListOfModels.step;
-            ListOfModels.lastName = "";
+            models.getPartiesStep = models.step;
+            models.searchStep = models.step;
+            models.lastName = "";
 
             return View();
         }
 
         [HttpGet("/api/parties")]
-        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(ListOfModels.step));
+        public IActionResult GetParties() => Json(_partyServices.GetAll().Take(models.step));
 
         [HttpGet("/api/show")]
         public IActionResult ShowMore()
@@ -35,10 +35,10 @@ namespace InputSearch.Controllers
             if (list is not null)
             {
                 var parties = list
-                    .Skip(ListOfModels.getPartiesStep)
-                    .Take(ListOfModels.step);
+                    .Skip(models.getPartiesStep)
+                    .Take(models.step);
 
-                ListOfModels.getPartiesStep += ListOfModels.step;
+                models.getPartiesStep += models.step;
 
                 return Json(parties);
             }
@@ -75,18 +75,18 @@ namespace InputSearch.Controllers
                 if(list is not null)
                     if(list.Count() > 0)
                     {
-                        if(search == ListOfModels.lastName)
+                        if(search == models.lastName)
                         {
-                            ListOfModels.searchStep += ListOfModels.step;
+                            models.searchStep += models.step;
 
-                            return Json(list.Skip(ListOfModels.searchStep)
-                                .Take(ListOfModels.step));
+                            return Json(list.Skip(models.searchStep)
+                                .Take(models.step));
                         }
 
-                        ListOfModels.searchStep = ListOfModels.step;
-                        ListOfModels.lastName = search;
+                        models.searchStep = 0;
+                        models.lastName = search;
 
-                        return Json(list.Take(ListOfModels.searchStep));
+                        return Json(list.Take(models.step));
                     }
             }
 
@@ -104,7 +104,18 @@ namespace InputSearch.Controllers
                 IEnumerable<PartyDTO>? dtos = _partyServices
                     .FilterParties(filter);
 
-                return Json(dtos);
+                if (filter.Equals(models.filter))
+                {
+                    models.filterStep += models.step;
+
+                    return Json(dtos.Skip(models.filterStep)
+                        .Take(models.step));
+                }
+
+                models.filterStep = 0;
+                models.filter = filter;
+
+                return Json(dtos.Take(models.step));
             }
 
             return NotFound();

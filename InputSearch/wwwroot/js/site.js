@@ -83,11 +83,10 @@ function btnShowMore(switcher) {
     btn.style.background = "none";
     btn.append("Show more");
 
-    if (switcher) {
-        btn.addEventListener("click", async () => await showMore());
-    }
-    else {
-        btn.addEventListener("click", async () => await searchShowMore());
+    switch (switcher) {
+        case -1: btn.addEventListener("click", async () => await filterShowMore()); break;
+        case 0: btn.addEventListener("click", async () => await showMore()); break;
+        case 1: btn.addEventListener("click", async () => await searchShowMore()); break;
     }
 
     position.append(btn);
